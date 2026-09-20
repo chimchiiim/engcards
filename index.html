@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#0a0e1a">
+<title>Карточки</title>
+<style>
+:root{--bg:#0a0e1a;--g:rgba(255,255,255,.09);--gb:rgba(255,255,255,.2);--tx:#f2f4fa;--mu:#9aa3b8;--ac:#6ea8ff;--ok:#30d158;--no:#ff453a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:radial-gradient(520px 420px at 12% 8%,#2c4fa877,transparent),radial-gradient(560px 520px at 92% 85%,#7a3aa866,transparent),var(--bg);color:var(--tx);font:16px -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;overflow:hidden}
+[hidden]{display:none!important}
+button{font:inherit;cursor:pointer}
+h1{font-size:34px;margin:18px 4px 12px}h3{margin:0 0 6px}h4{margin:18px 10px 6px;color:var(--mu);font-weight:600;font-size:14px}
+#v{height:100%;overflow-y:auto;padding:0 14px 120px}
+.gl{background:var(--g);border:1px solid var(--gb);backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%);border-radius:24px;box-shadow:0 10px 30px #0006,inset 0 1px 0 #ffffff33}
+#nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;padding:6px;z-index:5;border-radius:34px}
+#nav button{background:none;border:0;color:var(--mu);padding:8px 18px;border-radius:28px;font-size:12px;display:flex;flex-direction:column;align-items:center}
+#nav b{font-size:22px}#nav .on{background:rgba(255,255,255,.15);color:var(--tx)}
+#ov,#md{position:fixed;inset:0;z-index:10}
+#ov{background:var(--bg);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) 14px env(safe-area-inset-bottom,0px)}
+#md{background:rgba(0,0,0,.55);display:flex;z-index:12}
+.sh{width:100%;max-width:520px;margin:auto auto 0;border-radius:28px 28px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px));background:rgba(32,36,56,.88);max-height:92%;overflow:auto}
+.sh label{display:block;margin-top:10px;color:var(--mu);font-size:13px}
+.hd{display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-weight:600}
+.cn{min-width:52px;text-align:right}
+.pb{height:4px;background:#ffffff22;border-radius:2px}.pb i{display:block;height:100%;background:var(--ac);border-radius:2px;transition:width .3s}
+.ib{width:52px;height:52px;border-radius:50%;color:var(--tx);font-size:20px;padding:0}.ib.on{background:var(--ac);color:#04122b}.ib.ok{color:var(--ok)}.ib.no{color:var(--no)}
+.big2{width:88px;height:88px;font-size:36px;margin:auto}
+.mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px;min-height:0}
+.c{text-align:center}.p{padding:18px}
+.fc{min-height:52%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px;touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .25s,background .2s;padding:16px;text-align:center}
+.w1{font-size:42px;font-weight:800}.w2{font-size:26px;color:var(--mu)}
+.ft{display:flex;justify-content:space-around;padding:16px 0}
+.gr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.an{min-height:96px;color:var(--tx);font-size:17px;padding:8px;transition:background .2s}
+.g{background:rgba(48,209,88,.42)!important;border-color:var(--ok)!important}.r{background:rgba(255,69,58,.42)!important;border-color:var(--no)!important}
+.qq{text-align:center;font-size:34px;font-weight:800;min-height:88px;display:grid;place-items:center}
+.big{display:block;width:100%;text-align:left;padding:18px 20px;margin:12px 0;color:var(--tx);font-size:20px;font-weight:700}
+.big b{font-size:26px;margin-right:10px}.big small{display:block;color:var(--mu);font-weight:400;font-size:13px;margin-top:4px}
+.bt{background:var(--ac);color:#04122b;border:0;border-radius:16px;padding:14px 20px;font-size:16px;font-weight:700;width:100%;margin-top:14px}.bt.dn{background:var(--no);color:#fff}
+.in{width:100%;background:rgba(255,255,255,.08);border:1px solid var(--gb);border-radius:14px;padding:12px;color:var(--tx);font:inherit;margin:4px 0}
+.row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #ffffff14;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:transform 2s linear}
+.row.pr{transform:scale(.96)}.row>div{flex:1}.row small,.mu{color:var(--mu)}
+.rg{width:26px;height:26px;border-radius:50%;background:conic-gradient(var(--ac) calc(var(--p)*1%),#ffffff26 0)}
+.sp{background:none;border:0;font-size:20px}
+.ch{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}.ch button{white-space:nowrap;background:var(--g);border:1px solid var(--gb);color:var(--tx);border-radius:16px;padding:8px 14px}.ch .on{background:var(--ac);color:#04122b}
+.th{display:flex;justify-content:space-between;align-items:center}
+.st{display:flex;justify-content:space-around;padding:16px;text-align:center;color:var(--mu);font-size:13px}.st b{display:block;font-size:24px;color:var(--tx)}
+.sr{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #ffffff12}
+.ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:15px}.sr .sw,.sr select{margin-left:auto}
+.sw{position:relative;width:52px;height:30px}.sw input{opacity:0;position:absolute;inset:0;z-index:1;margin:0}
+.sw i{position:absolute;inset:0;background:#ffffff33;border-radius:15px;transition:.2s}
+.sw i:after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+i{background:var(--ok)}.sw input:checked+i:after{left:25px}
+select{background:none;color:var(--mu);border:0;font-size:16px}
+.mi{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid #ffffff14;color:var(--tx);padding:14px 4px;font-size:17px}.mi.dn{color:var(--no)}
+.rw{display:flex;gap:10px}
+#ts{position:fixed;top:calc(16px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:20;padding:10px 18px;border-radius:20px;background:rgba(40,44,64,.92);opacity:0;pointer-events:none;transition:.3s;text-align:center;max-width:90%}#ts.show{opacity:1}
+</style></head><body>
+<div id="v"></div><nav id="nav" class="gl"></nav><div id="ov" hidden></div><div id="md" hidden></div><div id="ts"></div>
+<script>
+const $=s=>document.querySelector(s),K='flashcards_v1';
+let S;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
+S=S||{decks:[],cur:null,tab:'home',day:'',done:0,set:{st:1,sv:0,both:0,shc:1,shs:0,sw:0,tt:3,tv:3,max:50,srs:1,vl:'en-US'}};
+const C=S.set,save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
+uid=()=>Math.random().toString(36).slice(2,9),
+shuf=a=>{a=[...a];for(let i=a.length;i>1;i--){const j=Math.random()*i|0;[a[i-1],a[j]]=[a[j],a[i-1]]}return a},
+all=()=>S.decks.flatMap(d=>d.cards),hard=()=>all().filter(c=>c.hard),
+deck=()=>S.cur=='hard'?null:S.decks.find(d=>d.id==S.cur),
+cards=()=>S.cur=='hard'?hard():(deck()?.cards||[]),
+rnd=()=>(C.sw?1:0)^(C.shs&&Math.random()<.5?1:0);
+if(S.day!=new Date().toDateString()){S.day=new Date().toDateString();S.done=0}
+function toast(m){const t=$('#ts');t.textContent=m;t.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>t.className='',2400)}
+function say(t,l,q){try{if(!q)speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=l;u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+const sayT=(c,q)=>say(c.t,C.vl,q),sayV=(c,q)=>say(c.v,'ru-RU',q),
+spk=(c,x,q)=>{if(C[x=='t'?'st':'sv'])(x=='t'?sayT:sayV)(c,q)};
+function modal(h){const m=$('#md');m.innerHTML='<div class="sh gl">'+h+'</div>';m.hidden=false;m.onclick=e=>{if(e.target==m)closeM()}}
+const closeM=()=>$('#md').hidden=true;
+function sure(t,f){modal(`<h3>${t}</h3><div class="rw"><button class="bt" onclick="closeM()">Отмена</button><button class="bt dn" id="yes">Да</button></div>`);$('#yes').onclick=()=>{closeM();f()}}
+function render(){
+ if(S.cur=='hard'&&!hard().length||S.cur!='hard'&&!deck())S.cur=S.decks[0]?.id||null;
+ $('#nav').innerHTML=[['home','🏠','Главная'],['cards','🗂','Карточки'],['set','⚙️','Настройки']].map(([k,i,n])=>`<button class="${S.tab==k?'on':''}" onclick="S.tab='${k}';render()"><b>${i}</b>${n}</button>`).join('');
+ $('#v').innerHTML=({home:vHome,cards:vCards,set:vSet})[S.tab]();save()}
+const chips=()=>`<div class="ch">${S.decks.map(d=>`<button class="${d.id==S.cur?'on':''}" onclick="S.cur='${d.id}';render()">${esc(d.name)}</button>`).join('')}${hard().length?`<button class="${S.cur=='hard'?'on':''}" onclick="S.cur='hard';render()">🔥 Трудные слова (${hard().length})</button>`:''}</div>`;
+function vHome(){
+ if(!S.decks.length)return`<h1>Главная</h1><div class="gl p c"><p>Пока нет колод. Создайте первую в разделе «Карточки».</p><button class="bt" onclick="S.tab='cards';render()">Перейти к карточкам</button></div>`;
+ const cs=cards(),due=C.srs?cs.filter(c=>!c.due||c.due<=Date.now()).length:cs.length;
+ return`<h1>Главная</h1>${chips()}<div class="gl st"><div><b>${cs.length}</b>карточек</div><div><b>${due}</b>к повторению</div><div><b>${S.done}/${C.max}</b>сегодня</div></div>
+<button class="big gl" onclick="learn()"><b>📖</b>Учить<small>вправо — выучено, влево — в «Трудные слова»</small></button>
+<button class="big gl" onclick="quiz(1)"><b>🔊</b>Аудио викторина<small>слушайте слово и выбирайте перевод</small></button>
+<button class="big gl" onclick="quiz(0)"><b>✍️</b>Тест<small>выберите правильный перевод</small></button>`}
+function grade(c,ok,cnt){c.reps=ok?(c.reps||0)+1:0;c.prog=Math.min(100,Math.round(c.reps/6*100));c.due=ok&&C.srs?Date.now()+[1,3,7,14,30,60][Math.min(c.reps-1,5)]*864e5:0;c.hard=ok?0:1;if(cnt)S.done++;save()}
+/* ---- учить ---- */
+let Q=[],qi=0,fl=0,ap=0,T0=0;
+const hdr=(t,n,N)=>`<div class="hd"><button class="ib gl" onclick="closeOv()">✕</button><span>${t}</span><span class="cn">${n} / ${N}</span></div><div class="pb"><i style="width:${N?n/N*100:0}%"></i></div>`,
+ovShow=h=>{const o=$('#ov');o.innerHTML=h;o.hidden=false};
+function closeOv(){clearTimeout(T0);ap=0;try{speechSynthesis.cancel()}catch(e){}$('#ov').hidden=true;render()}
+function learn(){let q=cards().filter(c=>!C.srs||!c.due||c.due<=Date.now());if(C.shc)q=shuf(q);Q=q.slice(0,Math.max(0,C.max-S.done));qi=0;
+ if(!Q.length)return toast(!cards().length?'В колоде нет карточек':S.done>=C.max?'Лимит на сегодня достигнут — увеличьте его в настройках':'На сегодня всё повторено');lc()}
+function lc(){
+ clearTimeout(T0);
+ if(qi>=Q.length)return ovShow(hdr('Учить',qi,Q.length)+`<div class="mid c"><h2>Готово 🎉</h2><p class="mu">Пройдено карточек: ${Q.length}</p><button class="bt" onclick="closeOv()">Закрыть</button></div>`);
+ const c=Q[qi],r=rnd(),f=r?'v':'t',b=r?'t':'v';fl=0;
+ ovShow(hdr('Учить',qi,Q.length)+`<div class="mid"><div class="fc gl" id="fc"><div class="w1">${esc(c[f])}</div><div class="w2" id="w2"></div></div></div><div class="ft"><button class="ib gl" onclick="sayT(Q[qi])">🔊</button><button class="ib gl no" onclick="dec(0)">✕</button><button class="ib gl ok" onclick="dec(1)">✓</button><button class="ib gl ${ap?'on':''}" onclick="ap=!ap;lc()">▶</button></div>`);
+ const e=$('#fc'),rv=()=>{if(fl)return;fl=1;$('#w2').textContent=c[b];spk(c,b,1)};
+ spk(c,f);if(C.both)rv();
+ if(ap)T0=setTimeout(()=>{rv();T0=setTimeout(()=>{qi++;lc()},C.tv*1000)},C.tt*1000);
+ let x0=0,dx=0,dn=0;
+ e.onpointerdown=v=>{dn=1;x0=v.clientX;e.setPointerCapture(v.pointerId);e.style.transition='none'};
+ e.onpointermove=v=>{if(!dn)return;dx=v.clientX-x0;e.style.transform=`translateX(${dx}px) rotate(${dx/20}deg)`;e.className='fc gl'+(dx>40?' g':dx<-40?' r':'')};
+ e.onpointerup=()=>{if(!dn)return;dn=0;if(Math.abs(dx)>90)dec(dx>0?1:0);else{e.style.transition='';e.style.transform='';e.className='fc gl';if(Math.abs(dx)<8)rv()}dx=0}}
+function dec(ok){const e=$('#fc');if(e.dataset.d)return;e.dataset.d=1;clearTimeout(T0);e.style.transition='transform .3s';e.className='fc gl '+(ok?'g':'r');e.style.transform=`translateX(${ok?600:-600}px) rotate(${ok?30:-30}deg)`;grade(Q[qi],ok,1);setTimeout(()=>{qi++;lc()},280)}
+/* ---- тест и аудио викторина ---- */
+let Z=[],zi=0,zs=0,au=0;
+function quiz(a){au=a;if(cards().length<2)return toast('Нужно минимум 2 карточки');Z=shuf(cards()).slice(0,20);zi=0;zs=0;qz()}
+function qz(){
+ const ti=au?'Аудио викторина':'Тест';
+ if(zi>=Z.length)return ovShow(hdr(ti,zi,Z.length)+`<div class="mid c"><h2>Результат: ${zs} из ${Z.length}</h2><button class="bt" onclick="quiz(${au})">Ещё раз</button><button class="bt gl" style="color:var(--tx)" onclick="closeOv()">Закрыть</button></div>`);
+ const c=Z[zi],r=au?0:rnd(),q=r?'v':'t',a=r?'t':'v',pool=cards().length>=4?cards():all(),
+ o=shuf([c,...shuf(pool.filter(x=>x!=c&&x[a]!=c[a])).slice(0,3)]);
+ ovShow(hdr(ti,zi,Z.length)+`<div class="mid"><div class="qq">${au?'<button class="ib gl big2" onclick="sayT(Z[zi])">🔊</button>':esc(c[q])}</div><div class="gr" id="gr">${o.map(x=>`<button class="an gl">${esc(x[a])}</button>`).join('')}</div></div>`);
+ if(au)sayT(c);
+ const bs=[...document.querySelectorAll('.an')];
+ bs.forEach((b,i)=>b.onclick=()=>{const g=$('#gr');if(g.dataset.d)return;g.dataset.d=1;const ok=o[i]==c;b.classList.add(ok?'g':'r');if(!ok)bs[o.indexOf(c)].classList.add('g');if(ok)zs++;grade(c,ok,0);setTimeout(()=>{zi++;qz()},ok?800:1400)})}
+/* ---- карточки ---- */
+let qs='';
+const rows=cs=>cs.map(c=>`<div class="row" data-id="${c.id}"><i class="rg" style="--p:${c.prog||0}"></i><div><div>${esc(c.t)}</div><small>${esc(c.v)}</small></div><button class="sp" data-s="${c.id}">🔊</button></div>`).join('')||'<p class="mu c">Ничего не найдено</p>',
+flt=()=>cards().filter(c=>(c.t+' '+c.v).toLowerCase().includes(qs.toLowerCase())),
+lst=()=>$('#ls').innerHTML=rows(flt());
+function vCards(){
+ const mn=`<button class="ib gl" onclick="menu()">☰</button>`;
+ if(!S.decks.length)return`<div class="th"><h1>Карточки</h1>${mn}</div><div class="gl p c"><p>Здесь появятся ваши слова.</p><button class="bt" onclick="addDeck()">Добавить колоду</button></div>`;
+ return`<div class="th"><h1>Все карточки</h1>${mn}</div>${chips()}<input class="in gl" placeholder="Поиск карточек" value="${esc(qs)}" oninput="qs=this.value;lst()"><p class="mu c" style="font-size:13px">Удерживайте карточку 2 секунды — откроется редактирование</p><div class="gl" id="ls">${rows(flt())}</div>`}
+let lp,p0;
+const cl=()=>{clearTimeout(lp);p0=0;document.querySelectorAll('.pr').forEach(r=>r.classList.remove('pr'))};
+document.addEventListener('pointerdown',e=>{const r=e.target.closest('.row');if(!r||e.target.closest('.sp'))return;p0=[e.clientX,e.clientY];r.classList.add('pr');lp=setTimeout(()=>{cl();navigator.vibrate?.(30);edit(r.dataset.id)},2000)});
+document.addEventListener('pointermove',e=>{if(p0&&Math.hypot(e.clientX-p0[0],e.clientY-p0[1])>10)cl()});
+['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,cl));
+document.addEventListener('click',e=>{const s=e.target.closest('.sp');if(s)sayT(all().find(c=>c.id==s.dataset.s))});
+function edit(id){const c=all().find(x=>x.id==id);if(!c)return;modal(`<h3>Редактировать карточку</h3><label>Термин</label><input class="in" id="e1" value="${esc(c.t)}"><label>Значение</label><input class="in" id="e2" value="${esc(c.v)}"><label>Заметки</label><textarea class="in" id="e3">${esc(c.n||'')}</textarea><p class="mu">Прогресс: ${c.prog||0}%</p><div class="rw"><button class="bt" onclick="sv('${id}')">Сохранить</button><button class="bt dn" onclick="del('${id}')">Удалить</button></div>`)}
+function sv(id){const c=all().find(x=>x.id==id);c.t=$('#e1').value.trim()||c.t;c.v=$('#e2').value.trim()||c.v;c.n=$('#e3').value;closeM();render()}
+function del(id){sure('Удалить карточку?',()=>{S.decks.forEach(d=>d.cards=d.cards.filter(c=>c.id!=id));render()})}
+function menu(){modal(`<h3>Меню</h3><button class="mi" onclick="addDeck()">➕ Добавить колоду</button><button class="mi" onclick="addWords()">📝 Добавить слова в колоду</button><button class="mi" onclick="ren()">✏️ Переименовать колоду</button><button class="mi" onclick="rst()">↺ Сбросить прогресс колоды</button><button class="mi dn" onclick="rmDeck()">🗑 Удалить колоду</button>`)}
+const need=()=>deck()?1:(closeM(),toast('Выберите обычную колоду, а не «Трудные слова»'),0);
+function addWords(){if(need())addDeck(1)}
+function addDeck(w){modal(`<h3>${w?'Добавить слова':'Новая колода'}</h3>${w?'':'<input class="in" id="a0" placeholder="Название колоды">'}<label>Список 1 — английские слова, по одному в строке</label><textarea class="in" id="a1" rows="6" placeholder="Repel&#10;Attract"></textarea><label>Список 2 — русские переводы в том же порядке</label><textarea class="in" id="a2" rows="6" placeholder="отталкивать&#10;притягивать"></textarea><button class="bt" onclick="mk(${w?1:0})">${w?'Добавить':'Создать колоду'}</button>`)}
+function mk(w){const ln=s=>$(s).value.split('\n').map(x=>x.trim()).filter(Boolean);let a=ln('#a1'),b=ln('#a2');
+ if(!a.length)return toast('Введите слова в оба списка');
+ if(a.length!=b.length)return toast(`Списки разной длины: ${a.length} и ${b.length}`);
+ if(a.filter(s=>/[а-яё]/i.test(s)).length>a.length/2)[a,b]=[b,a];
+ const cs=a.map((t,i)=>({id:uid(),t,v:b[i],n:'',prog:0,reps:0,due:0,hard:0}));
+ if(w)deck().cards.push(...cs);else{const d={id:uid(),name:$('#a0').value.trim()||'Колода '+(S.decks.length+1),cards:cs};S.decks.push(d);S.cur=d.id}
+ closeM();render()}
+function ren(){if(!need())return;modal(`<h3>Название колоды</h3><input class="in" id="rn" value="${esc(deck().name)}"><button class="bt" onclick="deck().name=$('#rn').value.trim()||deck().name;closeM();render()">Сохранить</button>`)}
+function rst(){if(!need())return;sure('Сбросить прогресс колоды?',()=>{deck().cards.forEach(c=>{c.prog=0;c.reps=0;c.due=0;c.hard=0});render()})}
+function rmDeck(){const d=deck();if(!need())return;sure(`Удалить колоду «${esc(d.name)}»?`,()=>{S.decks=S.decks.filter(x=>x!=d);render()})}
+/* ---- настройки ---- */
+const tg=(k,i,c,n)=>`<div class="sr"><span class="ic" style="background:${c}">${i}</span>${n}<label class="sw"><input type="checkbox" ${C[k]?'checked':''} onchange="C['${k}']=this.checked?1:0;save()"><i></i></label></div>`,
+sl=(k,i,c,n,o,f)=>`<div class="sr"><span class="ic" style="background:${c}">${i}</span>${n}<select onchange="C['${k}']=isNaN(this.value)?this.value:+this.value;save();render()">${o.map(v=>`<option value="${v}" ${C[k]==v?'selected':''}>${f?f(v):v}</option>`).join('')}</select></div>`;
+function vSet(){const tm=[1,2,3,4,5,7,10],f=v=>'0:'+String(v).padStart(2,'0');
+ return`<h1>Настройки</h1><h4>Настройки обучения</h4><div class="gl">${tg('st','🔊','#ff9f0a','Озвучить термин')}${tg('sv','🔉','#30c4c9','Озвучить значение')}${tg('both','🗂','#ff375f','Показать обе стороны')}${tg('shc','🔀','#30d158','Перемешать карточки')}${tg('shs','🔀','#ff9f0a','Перемешать стороны')}${tg('sw','⇄','#0a84ff','Поменять стороны')}</div>
+<h4>Автопереход (кнопка ▶ в режиме «Учить»)</h4><div class="gl">${sl('tt','⏱','#ff9f0a','Время на термин',tm,f)}${sl('tv','⏱','#30c4c9','Время на значение',tm,f)}</div>
+<h4>На сегодня</h4><div class="gl">${sl('max','📈','#ff453a','Максимум в день',[10,20,50,100,200,500])}</div>
+<h4>Алгоритм</h4><div class="gl">${tg('srs','🔁','#7d6cf0','Интервальное повторение')}</div>
+<h4>Языки</h4><div class="gl">${sl('vl','🌐','#0a84ff','Озвучка английского',['en-US','en-GB'])}</div>`}
+render();
+</script></body></html>
